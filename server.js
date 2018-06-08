@@ -5,7 +5,7 @@ const fs = require('fs');
 const port = process.env.PORT || 3000;
 
 var app = express();
-
+var maintainanceOn = false;
 
 hbs.registerPartials(__dirname + '/views/partials')
 
@@ -24,9 +24,11 @@ app.use((req,res,next)=>{
 	next();
 });
 
+if(maintainanceOn){
 app.use((req,res,next)=>{
 	res.render('maintainance.hbs');
 });
+}
 
 app.use(express.static(__dirname + '/public'));
 
@@ -46,6 +48,13 @@ app.get('/',(req, res)=>{
 	});
 });
 
+app.get('/projects', (req, res)=>{
+	//res.send('About Page');
+	res.render('projects.hbs', {
+		pageTitle: 'Projects',
+	});
+});
+
 app.get('/about', (req, res)=>{
 	//res.send('About Page');
 	res.render('about.hbs', {
@@ -54,6 +63,7 @@ app.get('/about', (req, res)=>{
 		
 	});
 });
+
 
 app.get('/bad', (req, res)=>{
 	res.send({
